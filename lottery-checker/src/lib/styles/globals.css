@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+
+    /* Colors */
+    --cl-main: hsl(203, 100%, 34%);
+    --cl-main-900: hsl(203, 100%, 94%);
+
+    --cl-text: hsl(0, 0%, 24%);
+
+    --cl-light-grey: hsl(0, 0%, 73%);
+    --cl-light-grey: hsl(0, 0%, 94%);
+
+    /* Games colors */
+    --cl-megasena: hsl(156, 65%, 36%);
+    --cl-maismilionaria: hsl(238, 45%, 33%);
+    --cl-lotofacil: hsl(304, 80%, 29%);
+    --cl-quina: hsl(257 80% 26%);
+    --cl-lotomania: hsl(31, 80%, 48%);
+    --cl-timemania: hsl(137, 80%, 40%);
+    --cl-duplasena: hsl(353, 79%, 36%);
+    --cl-federal: hsl(206, 100%, 35%);
+    --cl-loteca: hsl(7, 80%, 49%);
+    --cl-diadesorte: hsl(34, 65%, 48%);
+    --cl-supersete: hsl(77, 56%, 47%);
+
+    /* Font-sizes */
+    --fs-4xl: 3rem;
+    --fs-3xl: 2.5rem;
+    --fs-2xl: 2rem;
+    --fs-xl: 1.875rem;
+    --fs-l: 1.5rem;
+    --fs-m: 1.25rem;
+    --fs-b: 1rem;
+    --fs-s: .875rem;
+    --fs-xs: .75rem;
+}
+
+body {
+    font-family: 'Rubik', sans-serif;
+    color: var(--cl-text);
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 1440px;
+    padding-inline: 1rem;
+}
+
+@media (max-width: 780px) {
+    .container {
+        width: 100%;
+        padding-inline: 1rem;
+    }
+}
