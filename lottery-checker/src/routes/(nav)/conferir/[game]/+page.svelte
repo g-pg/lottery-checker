@@ -7,8 +7,7 @@
 	import SimpleIconBtn from "$lib/components/buttons/SimpleIconBtn.svelte";
 	import PrimaryCard from "$lib/components/misc/PrimaryCard.svelte";
 	import { getGameResults, type WinnerBets } from "$lib/logic/checkerFunctions.js";
-	import { page } from "$app/stores";
-	import { onMount } from "svelte";
+
 	import playConfetti from "$lib/utils/playConfetti.js";
 	import { goto } from "$app/navigation";
 
