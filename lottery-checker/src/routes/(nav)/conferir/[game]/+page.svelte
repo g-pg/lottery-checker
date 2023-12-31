@@ -1,15 +1,12 @@
 <script lang="ts">
-	import type { Game } from "$lib/data/gamesList.js";
 	import BoardControls from "$lib/components/boards/BoardControls.svelte";
 	import BoardNumber from "$lib/components/boards/BoardNumber.svelte";
 	import SelectionBoard from "$lib/components/boards/SelectionBoard.svelte";
 	import UserGameRow from "$lib/components/boards/UserGameRow.svelte";
 	import toast from "svelte-french-toast";
 	import SimpleIconBtn from "$lib/components/buttons/SimpleIconBtn.svelte";
-	import { onMount } from "svelte";
 	import PrimaryCard from "$lib/components/misc/PrimaryCard.svelte";
-	import { getGameResults } from "$lib/logic/checkerFunctions.js";
-	import { invalidateAll } from "$app/navigation";
+	import { getGameResults, type WinnerBets } from "$lib/logic/checkerFunctions.js";
 	import { page } from "$app/stores";
 
 	export let data;
@@ -58,7 +55,8 @@
 	}
 
 	// check games logic
-	let userResults = {};
+	let userResults: WinnerBets = [];
+	let gamesChecked = false;
 
 	function checkGames() {
 		if (userGames.length < 1) {
@@ -66,18 +64,17 @@
 			return;
 		}
 
-		const bets = userGames.map((g) => g.numbers);
+		const finalResult = getGameResults(data.game, userGames, officialResults?.dezenas);
 
-		const finalResult = getGameResults(data.game, bets, officialResults?.dezenas);
-		if (!finalResult.length) {
-			console.log("no win");
-		}
+		userResults = finalResult;
 
-		console.log(finalResult);
+		gamesChecked = true;
 	}
 
 	function resetGames() {
 		userGames = [];
+		userResults = [];
+		gamesChecked = false;
 	}
 
 	function addGame(): boolean {
@@ -104,103 +101,9 @@
 
 	//fetch
 	let raffle: string = "";
-	// let officialResults: any = getOfficialResults();
-	// $: if (game) officialResults = getOfficialResults();
-	// async function getOfficialResults() {
-	// 	console.log("rodou");
-	// 	const url = `https://loteriascaixa-api.herokuapp.com/api/${data.game.link}/${
-	// 		raffle || "latest"
-	// 	}`;
-
-	// 	// const mockResults = {
-	// 	// 	loteria: "megasena",
-	// 	// 	concurso: 2669,
-	// 	// 	data: "16/12/2023",
-	// 	// 	local: "ESPAÇO DA SORTE em SÃO PAULO, SP",
-	// 	// 	dezenasOrdemSorteio: ["07", "04", "35", "16", "46", "54"],
-	// 	// 	dezenas: ["04", "07", "16", "35", "46", "54"],
-	// 	// 	trevos: [],
-	// 	// 	timeCoracao: "",
-	// 	// 	mesSorte: "",
-	// 	// 	premiacoes: [
-	// 	// 		{
-	// 	// 			descricao: "6 acertos",
-	// 	// 			faixa: 1,
-	// 	// 			ganhadores: 0,
-	// 	// 			valorPremio: 0,
-	// 	// 		},
-	// 	// 		{
-	// 	// 			descricao: "5 acertos",
-	// 	// 			faixa: 2,
-	// 	// 			ganhadores: 64,
-	// 	// 			valorPremio: 36773.28,
-	// 	// 		},
-	// 	// 		{
-	// 	// 			descricao: "4 acertos",
-	// 	// 			faixa: 3,
-	// 	// 			ganhadores: 3317,
-	// 	// 			valorPremio: 1013.6,
-	// 	// 		},
-	// 	// 		{
-	// 	// 			descricao: "4 acertos",
-	// 	// 			faixa: 3,
-	// 	// 			ganhadores: 3317,
-	// 	// 			valorPremio: 1013.6,
-	// 	// 		},
-	// 	// 		{
-	// 	// 			descricao: "4 acertos",
-	// 	// 			faixa: 3,
-	// 	// 			ganhadores: 3317,
-	// 	// 			valorPremio: 1013.6,
-	// 	// 		},
-	// 	// 		{
-	// 	// 			descricao: "4 acertos",
-	// 	// 			faixa: 3,
-	// 	// 			ganhadores: 3317,
-	// 	// 			valorPremio: 1013.6,
-	// 	// 		},
-	// 	// 		{
-	// 	// 			descricao: "4 acertos",
-	// 	// 			faixa: 3,
-	// 	// 			ganhadores: 3317,
-	// 	// 			valorPremio: 1013.6,
-	// 	// 		},
-	// 	// 	],
-	// 	// 	estadosPremiados: [],
-	// 	// 	observacao: "",
-	// 	// 	acumulou: true,
-	// 	// 	proximoConcurso: 2670,
-	// 	// 	dataProximoConcurso: "31/12/2023",
-	// 	// 	localGanhadores: [],
-	// 	// 	valorArrecadado: 40819870,
-	// 	// 	valorAcumuladoConcurso_0_5: 132418255.11,
-	// 	// 	valorAcumuladoConcursoEspecial: 132418255.11,
-	// 	// 	valorAcumuladoProximoConcurso: 132418255.11,
-	// 	// 	valorEstimadoProximoConcurso: 550000000,
-	// 	// };
-	// 	// memoizedOfficialResults = mockResults;
-	// 	// return mockResults;
-	// 	try {
-	// 		const res = await fetch(url);
-	// 		if (!res.ok) {
-	// 			throw new Error("Oops! Algo deu errado :(");
-	// 		}
-
-	// 		const data = await res.json();
-
-	// 		officialResults = data;
-	// 		return data;
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// }
 
 	function handleSearchRaffle() {
-		console.log((window.location.search = "?concurso=" + raffle));
-		// $page.url.searchParams.set("concurso", raffle);
-
-		console.log(Array.from($page.url.searchParams.values()));
-		// invalidateAll();
+		window.location.search = "?concurso=" + raffle;
 	}
 </script>
 
@@ -336,7 +239,18 @@
 			<h3>Resultado</h3>
 			<PrimaryCard color="var(--cl-main-900)" style="min-height: 150px">
 				<div class="user-results-wrapper">
-					<p>Parabéns!</p>
+					<p class="main-result-title">
+						{#if !gamesChecked}
+							Aguardando apostas!
+						{:else if userResults.length === 0}
+							Não foi dessa vez :(
+						{:else}
+							Parabéns! Você teve {userResults.length} aposta{userResults.length >
+							1
+								? "s"
+								: ""} vencedora{userResults.length > 1 ? "s" : ""}!
+						{/if}
+					</p>
 				</div>
 			</PrimaryCard>
 		</div>
