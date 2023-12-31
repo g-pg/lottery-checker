@@ -10,6 +10,7 @@
 	import { page } from "$app/stores";
 	import { onMount } from "svelte";
 	import playConfetti from "$lib/utils/playConfetti.js";
+	import { goto } from "$app/navigation";
 
 	export let data;
 	$: ({ game, officialResults } = data);
@@ -74,6 +75,8 @@
 		userResults = finalResult;
 
 		gamesChecked = true;
+
+		goto("#results");
 	}
 
 	function resetGames() {
@@ -240,7 +243,7 @@
 				{/await}
 			</PrimaryCard>
 		</div>
-		<div class="user-results">
+		<div class="user-results" id="results">
 			<h3>Resultado</h3>
 			<PrimaryCard color="var(--cl-main-900)" style="min-height: 150px">
 				<div class="user-results-wrapper">
@@ -423,6 +426,10 @@
 	}
 
 	.user-results-wrapper {
+		scroll-margin-top: 2rem;
 		margin-bottom: auto;
+	}
+
+	.main-results-title {
 	}
 </style>

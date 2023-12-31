@@ -36,6 +36,10 @@
     --fs-xs: .75rem;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Rubik', sans-serif;
     color: var(--cl-text);
