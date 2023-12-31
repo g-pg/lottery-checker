@@ -8,6 +8,8 @@
 	import PrimaryCard from "$lib/components/misc/PrimaryCard.svelte";
 	import { getGameResults, type WinnerBets } from "$lib/logic/checkerFunctions.js";
 	import { page } from "$app/stores";
+	import { onMount } from "svelte";
+	import playConfetti from "$lib/utils/playConfetti.js";
 
 	export let data;
 	$: ({ game, officialResults } = data);
@@ -66,6 +68,9 @@
 
 		const finalResult = getGameResults(data.game, userGames, officialResults?.dezenas);
 
+		if (finalResult.length) {
+			playConfetti();
+		}
 		userResults = finalResult;
 
 		gamesChecked = true;
